@@ -11,17 +11,17 @@ class Card
 {
 private:
 	string suit;
-	string rank;
+	int rank;
 	int value;
 
 public:
 	Card();
 	Card(string s, int r, int v);
-	void setSuit(string s);
-	void setRank(string r);
+	void setSuit(const string& s);
+	void setRank(int r);
 	void setValue(int v);
+	int getValue() const;
 
 	string toString()const;
-
 };
 

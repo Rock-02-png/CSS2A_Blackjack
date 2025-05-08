@@ -1,16 +1,22 @@
-// CSS2A_Final.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// css2a final blackjack sim 
+// Daniel Lara
 
-
-//use a c++ libreary for shuffle vector, just refrence it in the doc
-
-
-#include <iostream>
+#include "Deck.h"
+#include "Card.h"
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <random>
 
 using namespace std;
+
 int main()
 {
+	Deck deck;
 
-
-} 
+	while (deck.isEmpty() == false)
+	{
+		Card card = deck.drawCard();
+		cout << card.toString() << endl;
+	}
+}
