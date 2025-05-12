@@ -4,8 +4,19 @@
 
 
 Card::Card() : suit("unknown"), rank(-1), value(-1) {}
-Card::Card(string s, int r, int v):suit(s), rank(r), value(v) 
+Card::Card(int r, int s)
 {
+	const string suits[] = { "Hearts", "Diamonds", "Clubs", "Spades" };
+	suit = suits[s % 4]; // Map integer to suit
+	setRank(r);
+	value = (r > 10) ? 10 : r; // Face cards are worth 10
+	if (r == 1)
+		value = 11; // Ace is worth 11 by default
+}
+
+Card::Card(string s, int r, int v) 
+{
+	setSuit(s);
 	setRank(r);
 	setValue(v);
 }
@@ -60,6 +71,11 @@ string Card::toString()const
 		else
 			return "Invalid Rank: " + to_string(rank);
 	}
+}
+
+bool Card::isAce() const
+{
+	return rank ==1;
 }
 
 

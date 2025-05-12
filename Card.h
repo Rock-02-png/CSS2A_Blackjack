@@ -16,12 +16,14 @@ private:
 
 public:
 	Card();
+	Card(int r, int s);
 	Card(string s, int r, int v);
+
 	void setSuit(const string& s);
 	void setRank(int r);
 	void setValue(int v);
 	int getValue() const;
-
+	bool isAce() const;
 	string toString()const;
 };
 
