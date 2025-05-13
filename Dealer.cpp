@@ -1,6 +1,8 @@
+#include "Person.h"
 #include "Dealer.h"
 #include <string>
 #include <iostream>
+using namespace std;
 
 Dealer::Dealer()
 {
@@ -21,13 +23,13 @@ void Dealer::playTurn(Deck& deck)
 {
     cout << "Dealer's turn begins..." << endl;
 
-    // Dealer continues hitting until hand value is 17 or more
+    // Dealer continues hitting until Person value is 17 or more
     while (shouldHit() && deck.isEmpty()== false) 
     { 
         Card card = deck.drawCard();
         addCard(card);
         cout << "Dealer drew: " << card.toString() << endl;
-        cout << "Dealer's new hand total: " << getTotalValue() << endl;
+        cout << "Dealer's new Person total: " << getTotalValue() << endl;
     }
 
     cout << "Dealer stands with total value: " << getTotalValue() << endl;

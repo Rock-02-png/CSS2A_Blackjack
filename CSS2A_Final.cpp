@@ -1,9 +1,9 @@
-// css2a final blackjack sim 
-// Daniel Lara
+// css2a final blackjack sim test main 
+
 
 #include "Deck.h"
 #include "Card.h"
-#include "Hand.h"
+#include "Person.h"
 #include "Dealer.h"
 #include "Player.h"
 
@@ -17,6 +17,19 @@
 #include <stdexcept>
 
 using namespace std;
+
+/* one more class named something like "Game Start" would be nice to clean up the main
+   it would have all the things that happen, menus,hit and stand options as well as displays like "Win!" or "Lose" 
+   maybe something to make use of the bet method as well.
+
+   hit is already written as the draw method in deck. Stand is just do not draw, so keep current value. 
+   bet and money methods are in player 
+
+   NOTE!! look out for issues with the Hand to person name change since i did it all at once
+
+   after this the project should be mostly done and if we have time we can add graphics. 
+*/
+
 
 int main()
 {
@@ -46,14 +59,14 @@ int main()
     dealer.addCard(deck.drawCard());
     dealer.addCard(deck.drawCard());
 
-    // Display hands
-    cout << p1.getName() << "'s hand: \n";
+    // Display Persons
+    cout << p1.getName() << "'s Hand: \n";
     for (const auto& card : p1.getCards()) {
         cout << card.toString() << endl;
     }
-    cout << "Total value: " << p1.getTotalValue() << endl;  // Correctly calling on p1
+    cout << "Total value: " << p1.getTotalValue() << endl;  
 
-    cout << "Dealer's hand: \n";
+    cout << "Dealer's Hand: \n";
     cout << dealer.getCards()[0].toString() << " face up\n";
     cout << "Hidden card(face down)\n";
 

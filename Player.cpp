@@ -70,7 +70,7 @@ void Player::hit(Deck& deck)
         Card card = deck.drawCard();
         addCard(card);
         cout << name << " hit and drew: " << card.toString() << endl;
-        cout << "New hand total: " << getTotalValue() << endl;
+        cout << "New Person total: " << getTotalValue() << endl;
     }
     else {
         cout << "Deck is empty. No more cards to draw." << endl;

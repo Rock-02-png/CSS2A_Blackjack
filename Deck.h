@@ -10,7 +10,6 @@
 
 class Deck
 {
-
 private:
 	vector<Card> cards; // Vector to hold the cards
 	int currentCard; // Index of the current card to be dealt

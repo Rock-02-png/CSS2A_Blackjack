@@ -1,10 +1,11 @@
 #pragma once
-#include "Hand.h"
+#include "Person.h"
 #include "Deck.h"
 #include <string>
 #include <iostream>
 using namespace std;
-class Dealer : public Hand
+
+class Dealer : public Person
 {
 public:
 	Dealer(); 
