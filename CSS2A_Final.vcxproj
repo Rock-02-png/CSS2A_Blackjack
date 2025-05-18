@@ -131,6 +131,7 @@
     <ClCompile Include="CSS2A_Final.cpp" />
     <ClCompile Include="Dealer.cpp" />
     <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="Card.h" />
     <ClInclude Include="Dealer.h" />
     <ClInclude Include="Deck.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
