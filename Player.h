@@ -11,12 +11,21 @@ private:
 	double money, bet;
 public:
 	Player();
-	void placeBet(double);
-	void setName(string);
-	void setMoney(double);
-	string getName();
-	double getMoney();
-	void adjustMoney(double);
+	//setters & getters 
+	void setName(const string& name);
+	void setMoney(double money);
+	double getMoney()const;
+	string getName()const;
+
+	//betting & outcome handling
+	bool placeBet(double amount);
+	void win(double multiplier);
+	void winBlackjack();
+	void push();
+	void lose();
+	void adjustMoney(double amount);
+
+	//gameplay
 	void hit(Deck& deck);  // Draw a card
 	void stand();          // Stop drawing cards
 };

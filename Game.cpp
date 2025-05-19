@@ -22,14 +22,14 @@ void Game::play()
 		if (player.hasBlackJack())
 		{
 			cout << "!!BlackJack!! You win!\n";
-			player.adjustMoney(bet);
+			player.winBlackjack();
 			continue;
 		}
 
 		if (dealer.hasBlackJack())
 		{
 			cout << "Dealer has Blackjack!! You lose!\n";
-			player.adjustMoney(-bet);
+
 			continue;
 		}
 
@@ -42,28 +42,56 @@ void Game::play()
 		determineOutcome();
 
 		cout << "Money left: " << player.getMoney() << endl;
-		cout << "Play again? (y/n): ";
+		
 		string again;
-		cin >> again;
-		if (again != "y" && again != "Y")
+		while (true)
+		{
+			cout << "Play Again?  (y/n): ";
+			cin >> again;
+			for (char& c : again) c = tolower(c);
+			if (again == "y" || again == "n")
+				break;
+			cout << "Invalid input. Please enter 'y' or 'n'\n";
+		}
+		if (again == "n")
+		{
+			cout << "Thanks for playing! Goodbye.\n";
 			break;
+		}
+
 
 		if (player.getMoney() <= 0) 
 		{
-			cout << "You're out of money. Game over.\n";
+			cout << "You're out of money.\n";
 		}
-		cout << "Game over. Cash out: " << player.getMoney() << endl;
 	}
+	cout << "Game over. Cash out: " << player.getMoney() << endl;
 }
 
 void Game::takeBet()
 {
-	cout << "Place a bet: ";
-	cin >> bet;
-	while (bet > player.getMoney())
+	while (true)
 	{
-		cout << "Place a bet: ";
+		cout << "\nYou have $" << player.getMoney() << ". Place a bet: ";
 		cin >> bet;
+		if (cin.fail())
+		{
+			cin.clear(); // clear error 
+			cin.ignore(1000, '\n'); // discard input
+			cout << "Invalid input. Enter a number.\n";
+		}
+		else if (bet <= 0)
+		{
+			cout << "Bet must be greater than zero.\n";
+		}
+		else if (bet > player.getMoney())
+		{
+			cout << "Cant bet more than you have. \n";
+		}
+		else
+		{
+			break; // valid bet
+		}
 	}
 	player.placeBet(bet);
 }
@@ -83,9 +111,18 @@ void Game::playerTurn()
 {
 	while (player.getTotalValue() < 21)
 	{
-		cout << "Hit or Stand? : ";
+		
 		string response;
-		cin >> response;
+		// input validation for response
+		while (true)
+		{
+			cout << "Hit or Stand? : ";
+			cin >> response;
+			for (char& c : response) c = tolower(c); 
+			if (response == "hit" || response == "stand")
+				break;
+			cout << "Invalid input. Please enter 'hit' or 'stand'\n";
+		}
 		if (response == "hit")
 		{
 			player += deck.drawCard();
@@ -135,20 +172,20 @@ void Game::determineOutcome()
 	if (player.isBust())
 	{
 		cout << "Busted! You Lost!\n";
-		player.adjustMoney(-bet);
+		
 	}
 	else if (dealer.isBust() || player > dealer)
 	{
 		cout << "You win!\n";
-		player.adjustMoney(bet);
+		player.adjustMoney(bet*2);
 	}
 	else if (player == dealer)
 	{
 		cout << "Tie!\n";
+		player.push(); //return bet
 	}
 	else
 	{
 		cout<< "You Lost!\n";
-		player.adjustMoney(-bet);
 	}
 }

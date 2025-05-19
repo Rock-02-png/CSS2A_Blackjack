@@ -10,12 +10,32 @@ Player::Player()
     bet = 0;
 }
 
-
 // Sets the player's name
-void Player::setName(string name) 
+void Player::setName(const string& name) 
 {
     this->name = name;
 }
+
+
+
+void Player::win(double multiplier)
+{
+    money += bet * (1 + multiplier);
+}
+void Player::lose()
+{
+    cout << name << " lost the bet of $" << bet << ".\n";
+}
+void Player::push()
+{
+    money += bet;
+}
+void Player::winBlackjack()
+{
+    money += bet * 2.5;
+    cout << name << " won with BlackJack! New Balance: $" << money << endl;
+}
+
 
 
 // Sets the player's money balance
@@ -26,30 +46,32 @@ void Player::setMoney(double money)
 
 
 // Returns the player's name
-string Player::getName()
+string Player::getName()const
 {
 	return name;
 }
 
 
 // Returns the player's current money balance
-double Player::getMoney()
+double Player::getMoney() const
 {
 	return money;
 }
 
 
 // Adjusts the player's money based on winnings or losses
-void Player::placeBet(double amount)
+bool Player::placeBet(double amount)
 {
-    if (amount > money) 
+    if (amount > money || amount <= 0) 
     {
-        cout << "Not enough funds to place that bet!" << endl;
+        cout << "Invalid funds. You have $" << money << ".\n";
+        return false;
     }
     else {
         bet = amount;
         money -= amount;
         cout << name << " placed a bet of $" << bet << ". Remaining balance: $" << money << endl;
+        return true;
     }
 }
 
