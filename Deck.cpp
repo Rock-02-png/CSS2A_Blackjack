@@ -55,5 +55,13 @@ bool Deck::isEmpty() const
 {
 	return currentCard >= cards.size();
 }
+int Deck::cardsRemaining() const
+{
+	return cards.size()- currentCard;
+}
 
+int Deck::totalCards() const
+{
+	return cards.size();
+}
 

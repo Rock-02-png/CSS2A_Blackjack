@@ -58,13 +58,13 @@ string Card::toString()const
 	switch (rank)
 	{
 	case 1:
-		return "Ace of " + suit;
+		return "A of " + suit;
 	case 11:
-		return "Jack of " + suit;
+		return "J of " + suit;
 	case 12:
-		return "Queen of " + suit;
+		return "Q of " + suit;
 	case 13:
-		return "King of " + suit;
+		return "K of " + suit;
 	default: 
 		if (rank > 1&& rank <=10)
 			return to_string(rank) + " of " + suit;

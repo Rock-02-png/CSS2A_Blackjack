@@ -19,4 +19,7 @@ public:
 	void shuffleDeck();
 	void reset();		  //resets deck
 	bool isEmpty() const; // Check if the deck is empty
+
+	int cardsRemaining() const;
+	int totalCards() const;
 };

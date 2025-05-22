@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Dealer.h"
 #include "Person.h"
+using namespace std;
 
 Game::Game()
 {
@@ -13,11 +14,18 @@ Game::Game()
 }
 void Game::play()
 {
+	cout << "Welcome To Blackjack Simulator!! \n";
 	while (player.getMoney() > 0)
 	{
+		roundCount++;  
+		cout << "\n==== Round " << roundCount << " ====\n";
+
 		takeBet();
 		dealInitalCards();
-		showHands(false);
+
+		//card print
+		printHand(player.getName(), player.getCards(), player.getTotalValue(), false);
+		printHand("Dealer", dealer.getCards(), 0, true); // hide first card
 
 		if (player.hasBlackJack())
 		{
@@ -98,6 +106,7 @@ void Game::takeBet()
 
 void Game::dealInitalCards()
 {
+	checkDeck(); // to ensure deck has plety cards left
 	player.clear();
 	dealer.clear();
 	// Initial deal
@@ -125,8 +134,10 @@ void Game::playerTurn()
 		}
 		if (response == "hit")
 		{
+			checkDeck();
 			player += deck.drawCard();
-			showHands(false);
+			printHand(player.getName(), player.getCards(), player.getTotalValue(), false);
+			printHand("Dealer", dealer.getCards(), 0, true);
 		}
 		else if (response == "stand")
 		{
@@ -136,37 +147,17 @@ void Game::playerTurn()
 }
 void Game::dealerTurn()
 {
-	showHands(true);
-	while (dealer.getTotalValue() <= 17)//dealer hits untill 17 or more
+	printHand(player.getName(), player.getCards(), player.getTotalValue(), false);
+	printHand("Dealer", dealer.getCards(), dealer.getTotalValue(), false);
+	while (dealer.getTotalValue() <= 17) //dealer hits untill 17 or more
 	{
+		checkDeck();
 		dealer += deck.drawCard();
-		showHands(true);
+		printHand(player.getName(), player.getCards(), player.getTotalValue(), false);
+		printHand("Dealer", dealer.getCards(), dealer.getTotalValue(), false);
 	}
 }
-void Game::showHands(bool dealerHidden)
-{
-	// Display Hands
-	cout << player.getName() << "'s Hand: \n";
-	for (const auto& card : player.getCards()) {
-		cout << card.toString() << endl;
-	}
-	cout << "Total value: " << player.getTotalValue() << endl;
 
-	cout << "\nDealer's Hand: \n";
-	if (dealerHidden)
-	{
-		for (const auto& card : dealer.getCards())
-			cout << card.toString() << endl;
-		cout << "Total Value: " << dealer.getTotalValue() << endl;
-		
-	}
-	else
-	{
-		cout << dealer.getCards()[0].toString() << " face up\n";
-		cout << "Hidden card (face down)\n";
-	}
-	// Check for blackjack
-}
 void Game::determineOutcome()
 {
 	if (player.isBust())
@@ -188,4 +179,116 @@ void Game::determineOutcome()
 	{
 		cout<< "You Lost!\n";
 	}
+}
+
+//draws single card in a box 
+void Game::pCardBox(const Card& card) const
+{
+	const int cardWidth = 14;
+	string label = card.toString();
+
+	if (label.length() > cardWidth)
+		label = label.substr(0, cardWidth);
+	else
+		label += string(cardWidth - label.length(), ' ');
+
+	cout << "+--------------+" << endl;
+	cout << "|" << label << "|" << endl;
+
+	// Add two empty lines for taller card
+	for (int i = 0; i < 2; i++)
+		cout << "|" << string(cardWidth, ' ') << "|" << endl;
+
+	cout << "|" << string(cardWidth - 2, ' ') << label.substr(0, 2) << "|" << endl;
+	cout << "+--------------+" << endl;
+}
+
+void Game::checkDeck()
+{
+	int cardsLeft = deck.cardsRemaining();
+	int halfDeck = 52 / 2; 
+
+	if (cardsLeft < halfDeck)
+	{
+		cout << "Deck is low, reshuffling...\n";
+		deck.reset();
+	}
+}
+
+
+//prints the entire hand for either player or dealer
+void Game::printHand(const string& name, const vector<Card>& hand, int totalValue, bool hideFirst) const
+{
+	cout << "\n------------------------------\n";
+	cout << name << "'s Hand:\n";
+
+	if (hand.empty())
+	{
+		cout << "(No cards)\n";
+		return;
+	}
+
+	// top border
+	for (unsigned int i = 0; i < hand.size(); i++)
+		cout << "+--------------+ ";
+	cout << "\n";
+
+	// rank/suit top-left or hidden
+	for (unsigned int i = 0; i < hand.size(); i++)
+	{
+		string label;
+		if (hideFirst && i == 0)
+			label = "??";
+		else
+		{
+			label = hand[i].toString();
+			if (label.length() > 2)
+				label = label.substr(0, 2);
+		}
+
+		cout << "|" << label << string(cardWidth - 2, ' ') << "| ";
+	}
+	cout << "\n";
+
+	// empty middle line
+	for (unsigned int i = 0; i < hand.size(); i++)
+		cout << "|" << string(cardWidth, ' ') << "| ";
+	cout << "\n";
+
+	// rank/suit bottom
+	for (unsigned int i = 0; i < hand.size(); i++)
+	{
+		string label;
+		if (hideFirst && i == 0)
+			label = "??";
+		else
+		{
+			label = hand[i].toString();
+			if (label.length() > 2)
+				label = label.substr(0, 2);
+		}
+
+		cout << "|" << string(cardWidth - 2, ' ') << label << "| ";
+	}
+	cout << "\n";
+
+	// bottom border
+	for (unsigned int i = 0; i < hand.size(); i++)
+		cout << "+--------------+ ";
+	cout << "\n";
+
+	// hands total display 
+	if (!hideFirst)
+		cout << name << "'s total: " << totalValue << "\n";
+	else
+	{
+		int visibleTotal = 0;
+		for (unsigned int i = 1; i < hand.size(); i++)
+		{
+			visibleTotal += hand[i].getValue();  // Make sure Card::getValue() returns card value
+		}
+		cout << name << "'s total: at least " << visibleTotal << "\n";
+	}
+
+	cout << "------------------------------\n\n";
 }
